@@ -1688,13 +1688,22 @@ async function checkForReplies() {
   if (!db) return;
   
   console.log("Reply Tracker: Checking for replies...");
+  let totalRepliesFound = 0;
+  let usersScanned = 0;
+  let threadsChecked = 0;
+  let errorsEncountered = 0;
   
   try {
     const usersSnapshot = await db.collection('users').where('googleTokens', '!=', null).get();
     
+    console.log(`Reply Tracker: Found ${usersSnapshot.docs.length} users with Google tokens`);
+    
     for (const userDoc of usersSnapshot.docs) {
+      usersScanned++;
       const userData = userDoc.data();
       if (!userData.googleTokens) continue;
+      
+      console.log(`Reply Tracker: Processing user ${userDoc.id} - email: ${userData.email}`);
       
       const client = getOAuth2Client();
       client.setCredentials(userData.googleTokens);
@@ -1707,83 +1716,96 @@ async function checkForReplies() {
       });
       
       const messages = response.data.messages || [];
+      console.log(`Reply Tracker: Found ${messages.length} sent messages to check`);
       
       for (const msg of messages) {
-        const msgDetail = await gmail.users.messages.get({
-          userId: 'me',
-          id: msg.id!
-        });
-        
-        const threadId = msgDetail.data.threadId;
-        if (threadId) {
-          const thread = await gmail.users.threads.get({
+        try {
+          threadsChecked++;
+          const msgDetail = await gmail.users.messages.get({
             userId: 'me',
-            id: threadId
+            id: msg.id!
           });
           
-          if (thread.data.messages && thread.data.messages.length > 1) {
-            const lastMsg = thread.data.messages[thread.data.messages.length - 1];
-            const fromHeader = lastMsg.payload?.headers?.find(h => h.name === 'From');
-            const subjectHeader = msgDetail.data.payload?.headers?.find(h => h.name === 'Subject');
-            const toHeader = msgDetail.data.payload?.headers?.find(h => h.name === 'To');
+          const threadId = msgDetail.data.threadId;
+          if (threadId) {
+            const thread = await gmail.users.threads.get({
+              userId: 'me',
+              id: threadId
+            });
             
-            const fromEmailMatch = fromHeader?.value?.match(/<([^>]+)>/) || fromHeader?.value?.match(/^([^<]+)/);
-            const fromEmail = fromEmailMatch ? fromEmailMatch[1].trim().toLowerCase() : '';
-            
-            if (!fromEmail || fromEmail === userData.email || !toHeader) continue;
-            
-            const replyEmail = fromHeader.value;
-            const emailMatch = replyEmail.match(/<([^>]+)>/) || replyEmail.match(/^([^<]+)/);
-            const replyToEmail = emailMatch ? emailMatch[1].trim().toLowerCase() : '';
-            
-            const subjectLower = (subjectHeader?.value || '').toLowerCase();
-            const isAutoResponse = AUTO_RESPONSE_KEYWORDS.some(keyword => 
-              subjectLower.includes(keyword) || 
-              (fromHeader.value && fromHeader.value.toLowerCase().includes(keyword))
-            );
-            
-            if (isAutoResponse) continue;
-            
-            const toEmailMatch = toHeader?.value?.match(/<([^>]+)>/) || toHeader?.value?.match(/^([^<]+)/);
-            const originalRecipientEmail = toEmailMatch ? toEmailMatch[1].trim().toLowerCase() : '';
-            
-            const campaignsSnapshot = await db.collection('campaigns').get();
-            const normalizedReplySubject = (subjectHeader?.value || '').replace(/^Re:\s*/i, '').trim();
-            
-            for (const campaignDoc of campaignsSnapshot.docs) {
-              const campaignData = campaignDoc.data();
-              const campaignSubject = campaignData.subject || '';
-              const normalizedCampaignSubject = campaignSubject.trim();
+            if (thread.data.messages && thread.data.messages.length > 1) {
+              const lastMsg = thread.data.messages[thread.data.messages.length - 1];
+              const fromHeader = lastMsg.payload?.headers?.find(h => h.name === 'From');
+              const subjectHeader = msgDetail.data.payload?.headers?.find(h => h.name === 'Subject');
+              const toHeader = msgDetail.data.payload?.headers?.find(h => h.name === 'To');
               
-              if (normalizedReplySubject.toLowerCase() === normalizedCampaignSubject.toLowerCase()) {
-                const contactsSnapshot = await db.collection(`campaigns/${campaignDoc.id}/contacts`)
-                  .where('status', '==', 'sent')
-                  .get();
+              const fromEmailMatch = fromHeader?.value?.match(/<([^>]+)>/) || fromHeader?.value?.match(/^([^<]+)/);
+              const fromEmail = fromEmailMatch ? fromEmailMatch[1].trim().toLowerCase() : '';
+              
+              if (!fromEmail || fromEmail === userData.email || !toHeader) continue;
+              
+              const replyEmail = fromHeader.value;
+              const emailMatch = replyEmail.match(/<([^>]+)>/) || replyEmail.match(/^([^<]+)/);
+              const replyToEmail = emailMatch ? emailMatch[1].trim().toLowerCase() : '';
+              
+              const subjectLower = (subjectHeader?.value || '').toLowerCase();
+              const isAutoResponse = AUTO_RESPONSE_KEYWORDS.some(keyword => 
+                subjectLower.includes(keyword) || 
+                (fromHeader.value && fromHeader.value.toLowerCase().includes(keyword))
+              );
+              
+              if (isAutoResponse) continue;
+              
+              const toEmailMatch = toHeader?.value?.match(/<([^>]+)>/) || toHeader?.value?.match(/^([^<]+)/);
+              const originalRecipientEmail = toEmailMatch ? toEmailMatch[1].trim().toLowerCase() : '';
+              
+              console.log(`Reply Tracker: Thread ${threadId} has ${thread.data.messages.length} messages. Reply from: ${replyToEmail}, Original to: ${originalRecipientEmail}`);
+              
+              const campaignsSnapshot = await db.collection('campaigns').get();
+              const normalizedReplySubject = (subjectHeader?.value || '').replace(/^Re:\s*/i, '').trim();
+              
+              for (const campaignDoc of campaignsSnapshot.docs) {
+                const campaignData = campaignDoc.data();
+                const campaignSubject = campaignData.subject || '';
+                const normalizedCampaignSubject = campaignSubject.trim();
                 
-                for (const contactDoc of contactsSnapshot.docs) {
-                  const contact = contactDoc.data();
-                  const contactEmail = contact.email?.toLowerCase().trim();
+                console.log(`Reply Tracker: Checking campaign ${campaignDoc.id}: subject "${normalizedCampaignSubject}" vs reply subject "${normalizedReplySubject}"`);
+                
+                if (normalizedReplySubject.toLowerCase() === normalizedCampaignSubject.toLowerCase()) {
+                  const contactsSnapshot = await db.collection(`campaigns/${campaignDoc.id}/contacts`)
+                    .where('status', '==', 'sent')
+                    .get();
                   
-                  if (contact.status === 'sent' && !contact.replied && 
-                      contactEmail && originalRecipientEmail && 
-                      (contactEmail === originalRecipientEmail || 
-                       contactEmail.includes(originalRecipientEmail) || 
-                       originalRecipientEmail.includes(contactEmail))) {
+                  for (const contactDoc of contactsSnapshot.docs) {
+                    const contact = contactDoc.data();
+                    const contactEmail = contact.email?.toLowerCase().trim();
                     
-                    await contactDoc.ref.update({
-                      replied: true,
-                      repliedAt: FieldValue.serverTimestamp()
-                    });
-                    console.log(`✓ Tracked reply for contact ${contact.email} in campaign ${campaignDoc.id}`);
-                    break;
+                    if (contact.status === 'sent' && !contact.replied && 
+                        contactEmail && originalRecipientEmail && 
+                        (contactEmail === originalRecipientEmail || 
+                         contactEmail.includes(originalRecipientEmail) || 
+                         originalRecipientEmail.includes(contactEmail))) {
+                      
+                      await contactDoc.ref.update({
+                        replied: true,
+                        repliedAt: FieldValue.serverTimestamp()
+                      });
+                      console.log(`✓ Tracked reply for contact ${contact.email} in campaign ${campaignDoc.id}`);
+                      totalRepliesFound++;
+                      break;
+                    }
                   }
                 }
               }
             }
           }
+        } catch (innerError: any) {
+          console.error(`Reply Tracker: Error processing message ${msg.id}:`, innerError.message);
+          errorsEncountered++;
         }
       }
     }
+    console.log(`Reply Tracker: Finished - Users scanned: ${usersScanned}, Threads checked: ${threadsChecked}, Replies found: ${totalRepliesFound}, Errors: ${errorsEncountered}`);
   } catch (error: any) {
     // Handle quota exceeded errors gracefully
     if (error.code === 8 || (error.details && error.details.includes('Quota exceeded'))) {
