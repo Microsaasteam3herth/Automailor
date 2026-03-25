@@ -22,7 +22,25 @@ export const Dashboard: React.FC<{ onNavigate?: (page: string) => void }> = ({ o
     const checkQuota = async () => {
       try {
         const response = await fetch('/api/quota-status');
-        const data = await response.json();
+        
+        // Check if response is OK before parsing JSON
+        if (!response.ok) {
+          console.error('Quota API error:', response.status, response.statusText);
+          return;
+        }
+        
+        // Get response as text first to handle non-JSON responses
+        const text = await response.text();
+        
+        // Try to parse as JSON
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch (parseError) {
+          console.error('Invalid JSON response from quota API:', text);
+          return;
+        }
+        
         if (data.quotaExceeded) {
           setQuotaExceeded(true);
           setQuotaMessage(data.message || "⚠️ Freemium limit reached! You've used your 100 free emails. Upgrade to Pro for unlimited emails.");
@@ -32,7 +50,7 @@ export const Dashboard: React.FC<{ onNavigate?: (page: string) => void }> = ({ o
       }
     };
     checkQuota();
-    // Check every minute
+    // Check every minute (60000ms) - reduced from rapid calls to avoid spam
     const interval = setInterval(checkQuota, 60000);
     return () => clearInterval(interval);
   }, []);
