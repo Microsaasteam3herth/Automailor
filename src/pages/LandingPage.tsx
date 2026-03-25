@@ -203,18 +203,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn }) => {
             Automate your outreach. Let AI handle the research, personalization, and sending. You focus on closing deals.
           </p>
 
-          <div className="hero-title flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
+          <div className="hero-title flex justify-center">
             <button 
               onClick={onSignIn}
-              className="group bg-emerald-600 text-white px-6 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 rounded-xl sm:rounded-2xl text-base sm:text-xl md:text-2xl font-bold hover:bg-emerald-500 transition-all shadow-[0_0_60px_rgba(16,185,129,0.4)] flex items-center gap-3 sm:gap-4 w-full sm:w-auto justify-center"
+              className="group bg-emerald-600 text-white px-6 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 rounded-xl sm:rounded-2xl text-base sm:text-xl md:text-2xl font-bold hover:bg-emerald-500 transition-all shadow-[0_0_60px_rgba(16,185,129,0.4)] flex items-center gap-3 sm:gap-4"
             >
               Get More Replies
               <ArrowRight className="group-hover:translate-x-2 transition-transform" size={20} />
-            </button>
-            <button className="px-6 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 rounded-xl sm:rounded-2xl text-base sm:text-xl md:text-2xl font-bold border border-white/10 hover:bg-white/5 transition-all flex items-center gap-3 sm:gap-4 backdrop-blur-md w-full sm:w-auto justify-center">
-              <Play size={20} fill="currentColor" />
-              <span className="hidden sm:inline">The Strategy</span>
-              <span className="sm:hidden">Watch</span>
             </button>
           </div>
         </div>
@@ -530,23 +525,23 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn }) => {
       </section>
 
       {/* Footer */}
-      <footer className="py-32 border-t border-white/10 bg-[#050505]">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-16">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-emerald-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-emerald-600/20">
-              <Mail size={28} />
+      <footer className="py-16 sm:py-24 md:py-32 border-t border-white/10 bg-[#050505]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-600 rounded-xl sm:rounded-2xl flex items-center justify-center text-white shadow-lg shadow-emerald-600/20">
+              <Mail size={24} />
             </div>
-            <span className="text-4xl font-['Playfair_Display'] italic font-light tracking-tighter text-white drop-shadow-lg transform hover:scale-105 transition-transform duration-300">AutoMailor</span>
+            <span className="text-2xl sm:text-3xl md:text-4xl font-['Playfair_Display'] italic font-light tracking-tighter text-white drop-shadow-lg transform hover:scale-105 transition-transform duration-300">AutoMailor</span>
           </div>
           
-          <div className="flex gap-16 text-neutral-400 font-medium uppercase tracking-[0.2em] text-xs">
+          <div className="flex flex-wrap justify-center gap-6 sm:gap-8 md:gap-16 text-neutral-400 font-medium uppercase tracking-[0.1em] sm:tracking-[0.2em] text-xs text-center">
             <a href="#/privacy" className="hover:text-white transition-colors">Privacy Protocol</a>
             <a href="#/terms" className="hover:text-white transition-colors">Terms of Service</a>
             <a href="#" className="hover:text-white transition-colors">Blog</a>
             <a href="#" className="hover:text-white transition-colors">Intelligence Feed</a>
           </div>
 
-          <p className="text-neutral-500 text-sm font-light">
+          <p className="text-neutral-500 text-xs sm:text-sm font-light text-center">
             © 2026 AutoMailor. The Future of Enterprise Acquisition.
           </p>
         </div>

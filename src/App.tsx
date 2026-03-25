@@ -17,7 +17,7 @@ import { TermsOfService } from './pages/TermsOfService';
 import { AuthModal } from './components/AuthModal';
 import { ThemeToggleButton } from './components/ThemeToggleButton';
 import { ThemeProvider } from './context/ThemeContext';
-import { Mail } from 'lucide-react';
+import { Mail, Menu, X } from 'lucide-react';
 
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -32,6 +32,7 @@ export default function App() {
     return localStorage.getItem('is_selecting_template') === 'true';
   });
   const [isDemoMode, setIsDemoMode] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const userRef = React.useRef(user);
   userRef.current = user;
 
@@ -128,7 +129,7 @@ export default function App() {
               <span className="text-xl font-['Playfair_Display'] italic font-bold tracking-tight text-white dark:text-white">AutoMailor</span>
             </div>
             
-            <nav className="flex items-center gap-8">
+            <nav className="hidden md:flex items-center gap-8">
               <button 
                 onClick={() => setPublicPage('home')}
                 className={`text-sm font-bold uppercase tracking-widest transition-colors ${publicPage === 'home' ? 'text-emerald-400' : 'text-neutral-400 hover:text-white dark:text-neutral-300 dark:hover:text-white'}`}
@@ -157,6 +158,49 @@ export default function App() {
                 </button>
               </div>
             </nav>
+            
+            {/* Mobile Menu Button */}
+            <button 
+              className="md:hidden text-white p-2"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+            
+            {/* Mobile Menu */}
+            {mobileMenuOpen && (
+              <div className="absolute top-full left-0 right-0 mt-4 mx-4 bg-white/10 dark:bg-neutral-900/90 backdrop-blur-xl border border-white/10 dark:border-neutral-700 rounded-2xl p-6 md:hidden">
+                <div className="flex flex-col gap-4">
+                  <button 
+                    onClick={() => { setPublicPage('home'); setMobileMenuOpen(false); }}
+                    className={`text-sm font-bold uppercase tracking-widest transition-colors text-left ${publicPage === 'home' ? 'text-emerald-400' : 'text-neutral-400 hover:text-white dark:text-neutral-300 dark:hover:text-white'}`}
+                  >
+                    Home
+                  </button>
+                  <button 
+                    onClick={() => { setPublicPage('pricing'); setMobileMenuOpen(false); }}
+                    className={`text-sm font-bold uppercase tracking-widest transition-colors text-left ${publicPage === 'pricing' ? 'text-emerald-400' : 'text-neutral-400 hover:text-white dark:text-neutral-300 dark:hover:text-white'}`}
+                  >
+                    Pricing
+                  </button>
+                  <button 
+                    onClick={() => { setPublicPage('blog'); setMobileMenuOpen(false); }}
+                    className={`text-sm font-bold uppercase tracking-widest transition-colors text-left ${publicPage === 'blog' ? 'text-emerald-400' : 'text-neutral-400 hover:text-white dark:text-neutral-300 dark:hover:text-white'}`}
+                  >
+                    Blog
+                  </button>
+                  <div className="flex items-center gap-4 pt-4 border-t border-white/10">
+                    <ThemeToggleButton />
+                    <button 
+                      onClick={() => { setIsAuthModalOpen(true); setMobileMenuOpen(false); }}
+                      className="bg-emerald-600 text-white px-6 py-2 rounded-xl text-sm font-bold hover:bg-emerald-500 transition-all flex-1"
+                    >
+                      Sign In
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </header>
 
