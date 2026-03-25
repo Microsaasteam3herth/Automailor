@@ -125,10 +125,18 @@ export const NewCampaign: React.FC<NewCampaignProps> = ({ onComplete, onManageTe
       const response = await fetch(`/api/auth/google/url?userId=${auth.currentUser.uid}`);
       
       if (!response.ok) {
-        const data = await response.json();
-        console.error('Server error fetching auth URL:', data);
+        // Try to get JSON error message, but handle non-JSON responses
+        let errorMsg = 'Failed to get auth URL';
+        try {
+          const text = await response.text();
+          const data = JSON.parse(text);
+          console.error('Server error fetching auth URL:', data);
+          errorMsg = data.message || errorMsg;
+        } catch (e) {
+          console.error('Server error (non-JSON):', response.status, response.statusText);
+        }
         authWindow.close();
-        alert(data.message || 'Failed to get auth URL. Please check your Google OAuth credentials in the Settings menu.');
+        alert(errorMsg + '. Please check your Google OAuth credentials in the Settings menu.');
         return;
       }
 
@@ -141,10 +149,12 @@ export const NewCampaign: React.FC<NewCampaignProps> = ({ onComplete, onManageTe
         authWindow.close();
         throw new Error('Failed to get auth URL');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error getting Google Auth URL:', error);
       authWindow.close();
-      alert('Failed to connect Gmail. Please ensure you have set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in the Settings menu.');
+      // Show more detailed error message
+      const errorMessage = error?.message || 'Unknown error';
+      alert(`Failed to connect Gmail: ${errorMessage}\n\nPlease ensure you have set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in the Settings menu.`);
     }
   };
 
