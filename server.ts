@@ -169,8 +169,8 @@
 //   "https://www.googleapis.com/auth/gmail.send",
 //   "https://www.googleapis.com/auth/gmail.readonly",
 //   "https://www.googleapis.com/auth/spreadsheets",
-//   "https://www.googleapis.com/auth/userinfo.email",
-//   "https://www.googleapis.com/auth/userinfo.profile",
+//   
+//   
 // ];
 
 // const SYSTEM_TEMPLATES = [
@@ -1657,8 +1657,8 @@ const SCOPES = [
   "https://www.googleapis.com/auth/gmail.send",
   "https://www.googleapis.com/auth/gmail.readonly",
   "https://www.googleapis.com/auth/spreadsheets",
-  "https://www.googleapis.com/auth/userinfo.email",
-  "https://www.googleapis.com/auth/userinfo.profile",
+  
+  
 ];
 
 // --- GEMINI CONFIG ---

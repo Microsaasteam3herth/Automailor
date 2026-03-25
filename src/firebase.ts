@@ -21,8 +21,6 @@ googleProvider.setCustomParameters({
   prompt: 'select_account'
 });
 // Add commonly needed scopes
-googleProvider.addScope('https://www.googleapis.com/auth/userinfo.email');
-googleProvider.addScope('https://www.googleapis.com/auth/userinfo.profile');
 
 // Initialize user profile if it doesn't exist
 export const initUserProfile = async (user: any) => {
