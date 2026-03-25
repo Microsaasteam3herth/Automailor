@@ -3139,8 +3139,8 @@ async function startServer() {
     }
     
     // Start automation engine (reduced frequency to save Firestore quota)
-    setInterval(processCampaigns, 300000); // Every 5 minutes instead of 1 minute
-    setInterval(checkForReplies, 600000);  // Every 10 minutes instead of 2 minutes
+    setInterval(processCampaigns, 300000); // Every 5 minutes for sending emails
+    setInterval(checkForReplies, 3600000);  // Every 1 hour for reply tracking
     
     app.listen(PORT, "0.0.0.0", () => {
       console.log(`Server running on http://localhost:${PORT}`);
