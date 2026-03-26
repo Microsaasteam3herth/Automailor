@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+Disallow: /login
+Disallow: /signup
+Disallow: /dashboard
+Disallow: /settings
+Disallow: /admin
+Disallow: /onboarding
+Disallow: /workspace
+Disallow: /campaigns
+Disallow: /templates
+
+Sitemap: https://automailor.com/sitemap.xml
