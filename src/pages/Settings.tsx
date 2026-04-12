@@ -143,7 +143,7 @@ export const Settings: React.FC<SettingsProps> = ({ user, onLogOut, onNavigate }
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <div className="bg-white dark:bg-neutral-800 rounded-3xl border border-neutral-200 dark:border-neutral-700 p-8 shadow-sm">
-        <h3 className="text-xl font-bold mb-6">Profile Settings</h3>
+        <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-6">Profile Settings</h3>
         <div className="flex items-center gap-6">
           <img 
             src={user.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.email}`} 
@@ -288,90 +288,100 @@ export const Settings: React.FC<SettingsProps> = ({ user, onLogOut, onNavigate }
         <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 sm:p-6 bg-black/50 backdrop-blur-sm">
           <div className="bg-white rounded-2xl sm:rounded-[40px] p-6 sm:p-12 w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
             <h2 className="text-xl sm:text-3xl font-bold mb-6 sm:mb-8">SMTP Settings</h2>
-            <form onSubmit={handleSaveSmtp} className="space-y-4 sm:space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-2">SMTP Host</label>
-                  <input 
-                    type="text" 
-                    value={smtpSettings.host}
-                    onChange={(e) => setSmtpSettings({...smtpSettings, host: e.target.value})}
-                    placeholder="smtp.example.com"
-                    className="w-full px-4 py-3 rounded-xl border border-neutral-200 outline-none"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-2">Port</label>
-                  <input 
-                    type="number" 
-                    value={smtpSettings.port}
-                    onChange={(e) => setSmtpSettings({...smtpSettings, port: parseInt(e.target.value)})}
-                    className="w-full px-4 py-3 rounded-xl border border-neutral-200 outline-none"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-2">Username</label>
-                  <input 
-                    type="text" 
-                    value={smtpSettings.user}
-                    onChange={(e) => setSmtpSettings({...smtpSettings, user: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl border border-neutral-200 outline-none"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-2">Password</label>
-                  <input 
-                    type="password" 
-                    value={smtpSettings.pass}
-                    onChange={(e) => setSmtpSettings({...smtpSettings, pass: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl border border-neutral-200 outline-none"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-2">From Name</label>
-                  <input 
-                    type="text" 
-                    value={smtpSettings.fromName}
-                    onChange={(e) => setSmtpSettings({...smtpSettings, fromName: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl border border-neutral-200 outline-none"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-2">From Email</label>
-                  <input 
-                    type="email" 
-                    value={smtpSettings.fromEmail}
-                    onChange={(e) => setSmtpSettings({...smtpSettings, fromEmail: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl border border-neutral-200 outline-none"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="flex gap-4 pt-6">
-                <button 
-                  type="submit" 
-                  disabled={isTestingSmtp}
-                  className="flex-1 bg-emerald-600 text-white py-4 rounded-xl font-bold hover:bg-emerald-700 disabled:opacity-50 flex items-center justify-center gap-2"
-                >
-                  {isTestingSmtp ? <Loader2 className="animate-spin" size={20} /> : 'Verify & Save Settings'}
-                </button>
-                <button type="button" onClick={() => setIsSmtpModalOpen(false)} className="flex-1 border border-neutral-200 py-4 rounded-xl font-bold hover:bg-neutral-50">
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+             <form onSubmit={handleSaveSmtp} className="space-y-4 sm:space-y-6">
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                 <div>
+                   <label className="block text-sm font-medium text-neutral-700 mb-2">SMTP Host</label>
+                   <input 
+                     type="text" 
+                     value={smtpSettings.host}
+                     onChange={(e) => setSmtpSettings({...smtpSettings, host: e.target.value})}
+                     placeholder="smtp.yourbusiness.com"
+                     className="w-full px-4 py-3 rounded-xl border border-neutral-200 outline-none"
+                     required
+                   />
+                   <p className="text-xs text-neutral-500 mt-1">Examples: smtp.gmail.com (Gmail), smtp.outlook.com (Outlook), smtp.zoho.com (Zoho)</p>
+                 </div>
+                 <div>
+                   <label className="block text-sm font-medium text-neutral-700 mb-2">Port</label>
+                   <input 
+                     type="number" 
+                     value={smtpSettings.port}
+                     onChange={(e) => setSmtpSettings({...smtpSettings, port: parseInt(e.target.value)})}
+                     placeholder="587"
+                     className="w-full px-4 py-3 rounded-xl border border-neutral-200 outline-none"
+                     required
+                   />
+                   <p className="text-xs text-neutral-500 mt-1">Common ports: 587 (TLS), 465 (SSL), 25 (plain - not recommended)</p>
+                 </div>
+               </div>
+               <div className="grid grid-cols-2 gap-6">
+                 <div>
+                   <label className="block text-sm font-medium text-neutral-700 mb-2">Username</label>
+                   <input 
+                     type="text" 
+                     value={smtpSettings.user}
+                     onChange={(e) => setSmtpSettings({...smtpSettings, user: e.target.value})}
+                     placeholder="your-email@gmail.com"
+                     className="w-full px-4 py-3 rounded-xl border border-neutral-200 outline-none"
+                     required
+                   />
+                   <p className="text-xs text-neutral-500 mt-1">Your full email address</p>
+                 </div>
+                 <div>
+                   <label className="block text-sm font-medium text-neutral-700 mb-2">Password</label>
+                   <input 
+                     type="password" 
+                     value={smtpSettings.pass}
+                     onChange={(e) => setSmtpSettings({...smtpSettings, pass: e.target.value})}
+                     className="w-full px-4 py-3 rounded-xl border border-neutral-200 outline-none"
+                     required
+                   />
+                   <p className="text-xs text-neutral-500 mt-1">Use an app password if 2FA is enabled</p>
+                 </div>
+               </div>
+               <div className="grid grid-cols-2 gap-6">
+                 <div>
+                   <label className="block text-sm font-medium text-neutral-700 mb-2">From Name</label>
+                   <input 
+                     type="text" 
+                     value={smtpSettings.fromName}
+                     onChange={(e) => setSmtpSettings({...smtpSettings, fromName: e.target.value})}
+                     placeholder="Your Name or Company Name"
+                     className="w-full px-4 py-3 rounded-xl border border-neutral-200 outline-none"
+                     required
+                   />
+                   <p className="text-xs text-neutral-500 mt-1">The name recipients will see as the sender</p>
+                 </div>
+                 <div>
+                   <label className="block text-sm font-medium text-neutral-700 mb-2">From Email</label>
+                   <input 
+                     type="email" 
+                     value={smtpSettings.fromEmail}
+                     onChange={(e) => setSmtpSettings({...smtpSettings, fromEmail: e.target.value})}
+                     placeholder="your-email@yourbusiness.com"
+                     className="w-full px-4 py-3 rounded-xl border border-neutral-200 outline-none"
+                     required
+                   />
+                   <p className="text-xs text-neutral-500 mt-1">Should match your SMTP username</p>
+                 </div>
+               </div>
+               <div className="flex gap-4 pt-6">
+                 <button 
+                   type="submit" 
+                   disabled={isTestingSmtp}
+                   className="flex-1 bg-emerald-600 text-white py-4 rounded-xl font-bold hover:bg-emerald-700 disabled:opacity-50 flex items-center justify-center gap-2"
+                 >
+                   {isTestingSmtp ? <Loader2 className="animate-spin" size={20} /> : 'Verify & Save Settings'}
+                 </button>
+                 <button type="button" onClick={() => setIsSmtpModalOpen(false)} className="flex-1 border border-neutral-200 py-4 rounded-xl font-bold hover:bg-neutral-50">
+                   Cancel
+                 </button>
+               </div>
+             </form>
+           </div>
+         </div>
+       )}
 
       <div className="bg-red-50 rounded-3xl border border-red-100 p-8 flex items-center justify-between">
         <div>

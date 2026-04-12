@@ -1,27 +1,30 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  Mail, 
-  Zap, 
-  BarChart3, 
-  CheckCircle2, 
-  ArrowRight, 
-  ChevronDown, 
-  ChevronUp, 
-  TrendingUp, 
-  Target, 
-  ShieldCheck,
-  Play,
-  Sparkles,
-  Loader2,
-  Globe,
-  Cpu,
-  Layers
+   Mail, 
+   Zap, 
+   BarChart3, 
+   CheckCircle2, 
+   ArrowRight, 
+   ChevronDown, 
+   ChevronUp, 
+   TrendingUp, 
+   Target, 
+   ShieldCheck,
+   Play,
+   Sparkles,
+   Loader2,
+   Globe,
+   Cpu,
+   Layers,
+   Moon,
+   Sun
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 import { GoogleGenAI } from "@google/genai";
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ThemeToggleButton } from './../components/ThemeToggleButton';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -188,11 +191,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn }) => {
       <section ref={heroRef} className="relative h-screen flex flex-col items-center justify-center overflow-hidden px-6">
         <HeroVideo />
 
-        <div className="relative z-10 text-center max-w-6xl">
-          <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/10 text-emerald-400 text-xs font-bold uppercase tracking-[0.3em] mb-12 backdrop-blur-2xl">
-            <Sparkles size={18} />
-            <span>Smart AI Email Outreach</span>
-          </div>
+<div className="relative z-10 text-center max-w-6xl">
+            <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/10 text-emerald-400 text-xs font-bold uppercase tracking-[0.3em] mb-12 backdrop-blur-2xl">
+              <Sparkles size={18} />
+              <span>Smart AI Email Outreach</span>
+            </div>
+            
+            {/* Theme toggle - only on landing page */}
+            <div className="absolute top-4 right-4">
+              <ThemeToggleButton />
+            </div>
           
           <h1 className="hero-title text-8xl md:text-[12rem] font-serif italic font-light tracking-tighter mb-10 leading-[0.75] lowercase">
             Grow <br />
@@ -240,7 +248,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn }) => {
       </section>
 
       {/* Deep Explanation: What We Do */}
-      <section ref={whatWeDoRef} className="py-16 sm:py-24 md:py-48 bg-white dark:bg-neutral-900 text-black dark:text-white relative overflow-hidden">
+      <section ref={whatWeDoRef} className="py-16 sm:py-24 md:py-48 bg-white text-black relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-32 items-center">
             <div className="reveal-up">

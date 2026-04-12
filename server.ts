@@ -1684,7 +1684,7 @@ const AUTO_RESPONSE_KEYWORDS = [
   'bounce', 'mailer-daemon', 'noreply', 'no-reply', 'donotreply', 'do not reply'
 ];
 
-async function checkForReplies() {
+export async function checkForReplies() {
   if (!db) return;
   
   console.log("Reply Tracker: Checking for replies...");
@@ -1820,7 +1820,7 @@ async function checkForReplies() {
 }
 
 // --- AUTOMATION ENGINE ---
-async function processCampaigns() {
+export async function processCampaigns() {
   if (!db) {
     console.log("Automation Engine: Firestore not initialized, skipping...");
     return;

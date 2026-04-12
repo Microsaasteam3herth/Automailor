@@ -15,7 +15,6 @@ import { BlogPage } from './pages/BlogPage';
 import { PrivacyPolicy } from './pages/PrivacyPolicy';
 import { TermsOfService } from './pages/TermsOfService';
 import { AuthModal } from './components/AuthModal';
-import { ThemeToggleButton } from './components/ThemeToggleButton';
 import { ThemeProvider } from './context/ThemeContext';
 import { Mail, Menu, X } from 'lucide-react';
 
@@ -148,15 +147,14 @@ export default function App() {
               >
                 Blog
               </button>
-              <div className="flex items-center gap-4">
-                <ThemeToggleButton />
-                <button 
-                  onClick={() => setIsAuthModalOpen(true)}
-                  className="bg-emerald-600 text-white px-6 py-2 rounded-xl text-sm font-bold hover:bg-emerald-500 transition-all"
-                >
-                  Sign In
-                </button>
-              </div>
+             <div className="flex items-center gap-4">
+                 <button 
+                   onClick={() => setIsAuthModalOpen(true)}
+                   className="bg-emerald-600 text-white px-6 py-2 rounded-xl text-sm font-bold hover:bg-emerald-500 transition-all"
+                 >
+                   Sign In
+                 </button>
+               </div>
             </nav>
             
             {/* Mobile Menu Button */}
@@ -189,15 +187,14 @@ export default function App() {
                   >
                     Blog
                   </button>
-                  <div className="flex items-center gap-4 pt-4 border-t border-white/10">
-                    <ThemeToggleButton />
-                    <button 
-                      onClick={() => { setIsAuthModalOpen(true); setMobileMenuOpen(false); }}
-                      className="bg-emerald-600 text-white px-6 py-2 rounded-xl text-sm font-bold hover:bg-emerald-500 transition-all flex-1"
-                    >
-                      Sign In
-                    </button>
-                  </div>
+                   <div className="flex items-center gap-4 pt-4 border-t border-white/10">
+                     <button 
+                       onClick={() => { setIsAuthModalOpen(true); setMobileMenuOpen(false); }}
+                       className="bg-emerald-600 text-white px-6 py-2 rounded-xl text-sm font-bold hover:bg-emerald-500 transition-all flex-1"
+                     >
+                       Sign In
+                     </button>
+                   </div>
                 </div>
               </div>
             )}

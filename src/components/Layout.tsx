@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  LayoutDashboard, 
-  Send, 
-  BarChart3, 
-  Settings as SettingsIcon, 
-  LogOut,
-  PlusCircle,
-  Mail,
-  Layout as LayoutIcon,
-  Moon,
-  Sun,
-  Menu,
-  X
+   LayoutDashboard, 
+   Send, 
+   BarChart3, 
+   Settings as SettingsIcon, 
+   LogOut,
+   PlusCircle,
+   Mail,
+   Layout as LayoutIcon,
+   Menu,
+   X
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { User } from 'firebase/auth';
 import UpvoteWidget from './UpvoteWidget';
-import { useTheme } from '../context/ThemeContext';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -27,7 +24,6 @@ interface LayoutProps {
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children, user, currentPage, onNavigate, showUpvoteWidget = true }) => {
-  const { theme, toggleTheme } = useTheme();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -80,7 +76,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, currentPage, onN
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-neutral-50 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 font-sans">
+    <div className="flex min-h-screen bg-neutral-50 text-neutral-900 font-sans">
       {/* Mobile Overlay */}
       {sidebarOpen && (
         <div 
@@ -174,13 +170,6 @@ export const Layout: React.FC<LayoutProps> = ({ children, user, currentPage, onN
             <h1 className="text-base sm:text-lg font-semibold capitalize dark:text-neutral-100">{currentPage.replace('-', ' ')}</h1>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
-              aria-label="Toggle theme"
-            >
-              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
             <button 
               onClick={() => onNavigate('new-campaign')}
               className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 sm:px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-1 sm:gap-2 transition-colors"
