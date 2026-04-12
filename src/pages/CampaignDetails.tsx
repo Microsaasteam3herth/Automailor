@@ -235,7 +235,7 @@ export const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaignId, on
       <div className="bg-white rounded-2xl sm:rounded-3xl border border-neutral-200 overflow-hidden shadow-sm">
         <div className="p-4 sm:p-6 border-b border-neutral-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h2 className="text-lg sm:text-2xl font-bold">{campaign?.name}</h2>
+             <h2 className="text-lg sm:text-2xl font-bold text-neutral-900 dark:text-white">{campaign?.name}</h2>
             <p className="text-neutral-500 mt-1 text-sm">Created {campaign?.createdAt?.toDate?.()?.toLocaleDateString() || 'recently'}</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -301,7 +301,7 @@ export const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaignId, on
 
       <div className="bg-white rounded-3xl border border-neutral-200 overflow-hidden shadow-sm">
         <div className="p-6 border-b border-neutral-100 flex items-center justify-between bg-neutral-50/50">
-          <h3 className="text-lg font-bold">Contacts ({contacts.length})</h3>
+           <h3 className="text-lg font-bold text-neutral-900 dark:text-white">Contacts ({contacts.length})</h3>
           <div className="flex gap-4 text-sm">
             <span className="flex items-center gap-1.5 text-neutral-500"><div className="w-2 h-2 rounded-full bg-neutral-300" /> Pending: {contacts.length - sentCount}</span>
             <span className="flex items-center gap-1.5 text-neutral-500"><div className="w-2 h-2 rounded-full bg-blue-500" /> Sent: {sentCount}</span>

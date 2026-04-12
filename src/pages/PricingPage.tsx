@@ -92,20 +92,20 @@ export const PricingPage: React.FC<{ onSignIn: () => void }> = ({ onSignIn }) =>
       {/* Pricing Grid */}
       <section className="pb-16 sm:pb-24 md:pb-48 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-12">
-          <PricingCard 
-            tier="Pro"
-            price="$9"
-            description="Free 7-day trial. Everything you need to scale."
-            highlight={true}
-            features={[
-              "7-Day Free Trial",
-              "1,000 AI-Personalized Emails",
-              "Deep Web Lead Enrichment",
-              "Gmail Integration",
-              "Priority Support"
-            ]}
-            onSelect={onSignIn}
-          />
+           <PricingCard 
+             tier="Pro"
+             price="$9"
+             description="Free 7-day trial. Everything you need to scale."
+             highlight={true}
+             features={[
+               "7-Day Free Trial",
+               "1,000 AI-Personalized Emails",
+               "Deep Web Lead Enrichment",
+               "Gmail Integration",
+               "Priority Support"
+             ]}
+             onSelect={() => window.location.href = 'https://checkout.dodopayments.com/buy/pdt_0NbJKikekRihFg03pbtwa?quantity=1'}
+           />
           <PricingCard 
             tier="Enterprise"
             price="Custom"
