@@ -340,21 +340,21 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
         </div>
       )}
       {/* Email Limits Disclosure Modal */}
-      {showLimitsDisclosure && (
-        <EmailLimitsDisclosure 
-          onAccept={() => {
-            console.log('EmailLimitsDisclosure: onAccept called');
-            setLimitsAccepted(true);
-            setShowLimitsDisclosure(false);
-            // Trigger Google sign-in after accepting limits
-            handleGoogleSignIn();
-          }}
-          onCancel={() => {
-            console.log('EmailLimitsDisclosure: onCancel called');
-            setShowLimitsDisclosure(false);
-          }}
-        />
-      )}
+       {showLimitsDisclosure && (
+         <EmailLimitsDisclosure 
+           onAccept={async () => {
+             console.log('EmailLimitsDisclosure: onAccept called');
+             setLimitsAccepted(true);
+             setShowLimitsDisclosure(false);
+             // Trigger Google sign-in after accepting limits
+             await handleContinueWithGoogle();
+           }}
+           onCancel={() => {
+             console.log('EmailLimitsDisclosure: onCancel called');
+             setShowLimitsDisclosure(false);
+           }}
+         />
+       )}
     </AnimatePresence>
   );
 };

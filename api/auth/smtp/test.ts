@@ -17,18 +17,19 @@ export default async function handler(req: any, res: any) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  try {
-    // For now, return a success response as a placeholder
-    // In production, this would actually test the SMTP connection
-    const { host, port, user, password, fromEmail } = req.body;
+   try {
+     // For now, return a success response as a placeholder
+     // In production, this would actually test the SMTP connection
+     const { host, port, user, password, pass, fromEmail, fromName } = req.body;
 
-    // Basic validation
-    if (!host || !port || !user || !password || !fromEmail) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'Missing required SMTP configuration fields' 
-      });
-    }
+     // Basic validation - support both 'password' and 'pass' fields for compatibility
+     const actualPassword = password || pass;
+     if (!host || !port || !user || !actualPassword || !fromEmail) {
+       return res.status(400).json({ 
+         success: false, 
+         error: 'Missing required SMTP configuration fields' 
+       });
+     }
 
     // Placeholder: In production, you'd use nodemailer to test the connection
     // const transporter = nodemailer.createTransport({ ... });

@@ -1111,34 +1111,7 @@
 //   }
 // });
 
-// // SMTP Test Route
-// app.post("/api/auth/smtp/test", async (req, res) => {
-//   const { host, port, secure, user, pass, fromEmail } = req.body;
-
-//   if (!host || !port || !user || !pass) {
-//     return res.status(400).json({ success: false, error: "Missing SMTP configuration fields" });
-//   }
-
-//   try {
-//     const transporter = nodemailer.createTransport({
-//       host,
-//       port: Number(port),
-//       secure: secure === true || port === 465,
-//       auth: { user, pass },
-//     } as any);
-
-//     // Verify connection configuration
-//     await transporter.verify();
-
-//     res.json({ success: true, message: "SMTP connection successful" });
-//   } catch (error: any) {
-//     console.error("SMTP Test Error:", error);
-//     res.status(500).json({ 
-//       success: false, 
-//       error: error.message || "Failed to connect to SMTP server. Please check your credentials and settings." 
-//     });
-//   }
-// });
+// SMTP Test Route removed - using the active one below instead
 
 // // Email Open Tracking Endpoint
 // app.get("/api/track/open", async (req, res) => {
@@ -2886,7 +2859,7 @@ app.post("/api/generate-email", async (req, res) => {
 app.post("/api/auth/smtp/test", async (req, res) => {
   const { host, port, secure, user, pass, fromEmail } = req.body;
   
-  if (!host || !port || !user || !pass) {
+  if (!host || !port || !user || !pass || !fromEmail) {
     return res.status(400).json({ success: false, error: "Missing SMTP configuration fields" });
   }
   

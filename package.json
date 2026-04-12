@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx server.ts & npx vite",
+    "dev": "tsx server.ts & npx vite --port 5175",
     "start": "tsx server.ts",
     "build": "vite build",
     "preview": "vite preview",

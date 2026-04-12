@@ -149,13 +149,15 @@ export const NewCampaign: React.FC<NewCampaignProps> = ({ onComplete, onManageTe
         authWindow.close();
         throw new Error('Failed to get auth URL');
       }
-    } catch (error: any) {
-      console.error('Error getting Google Auth URL:', error);
-      authWindow.close();
-      // Show more detailed error message
-      const errorMessage = error?.message || 'Unknown error';
-      alert(`Failed to connect Gmail: ${errorMessage}\n\nPlease ensure you have set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in the Settings menu.`);
-    }
+     } catch (error: any) {
+       console.error('Error getting Google Auth URL:', error);
+       if (authWindow && !authWindow.closed) {
+         authWindow.close();
+       }
+       // Show more detailed error message
+       const errorMessage = error?.message || 'Unknown error';
+       alert(`Failed to connect Gmail: ${errorMessage}\n\nPlease ensure you have set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in the Settings menu.`);
+     }
   };
 
   const handleSaveSmtp = async (e: React.FormEvent) => {

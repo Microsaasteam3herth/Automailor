@@ -217,7 +217,7 @@ export const Dashboard: React.FC<{ onNavigate?: (page: string) => void }> = ({ o
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         <div className="bg-white dark:bg-neutral-800 p-4 sm:p-6 rounded-2xl border border-neutral-200 dark:border-neutral-700 shadow-sm">
           <h3 className="text-lg font-semibold mb-4 sm:mb-6 dark:text-neutral-100">Outreach Performance</h3>
-          <div className="h-[200px] sm:h-[250px] lg:h-[300px]" style={{ minWidth: 200, minHeight: 150 }}>
+           <div className="relative w-full h-[200px] sm:h-[250px] lg:h-[300px]" style={{ minWidth: 0, minHeight: 0 }}>
             <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
               <AreaChart data={chartData}>
                 <defs>
